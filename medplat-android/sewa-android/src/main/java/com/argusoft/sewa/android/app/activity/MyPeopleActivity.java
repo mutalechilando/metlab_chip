@@ -147,6 +147,8 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
     private static final String SERVICE_PREGNANT_WOMEN = "pregnantWomen";
     private static final String SERVICE_PNC_MOTHERS = "pncMothers";
     private static final String SERVICE_CHILDREN = "children";
+
+    private static final String SERVICE_ADOLESCENT = "adolescent";
     private static final String SERVICE_TEMP_REGISTRATION = "tempRegistration";
     private static final String SERVICE_UPDATE_MEMBER = "updateMember";
     private static final String SERVICE_ADD_NEW_MEMBER = "addNewMember";
@@ -305,6 +307,9 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
                                 addSearchTextBox();
                                 retrieveMemberListForRchRegister(null, null);
                                 break;
+                            case 5:
+                                selectedService = SERVICE_ADOLESCENT;
+                                break;
 //                            case 4:
 //                                selectedService = SERVICE_TEMP_REGISTRATION;
 //                                showProcessDialog();
@@ -369,6 +374,7 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
                         if (selectedService.equals(SERVICE_ELIGIBLE_COUPLES)
                                 || selectedService.equals(SERVICE_PREGNANT_WOMEN)
                                 || selectedService.equals(SERVICE_PNC_MOTHERS)
+                                || selectedService.equals(SERVICE_ADOLESCENT)
                                 || selectedService.equals(SERVICE_CHILDREN)) {
                             screen = PEOPLE_SELECTION_SCREEN;
                             showProcessDialog();
@@ -711,6 +717,7 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
         //items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.SERVICE_GERIATRIC_MEMBERS)));
         //items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.SERVICE_TRAVELLERS_SCREENING)));
         //items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.MANAGE_FAMILY_MIGRATIONS)));
+        items.add(new ListItemDataBean(UtilBean.getMyLabel(LabelConstants.ADOLESCENT_HEALTH_SCREENING)));
 
         AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> {
             selectedServiceIndex = position;
@@ -822,6 +829,9 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
             case SERVICE_CHILDREN:
                 memberList = fhsService.retrieveChildsBelow5YearsByAshaArea(selectedAshaAreas, false, villageIds, s, limit, offset, qrScanFilter);
                 break;
+            case SERVICE_ADOLESCENT:
+                memberList = fhsService.retrieveAdolescentChildren(selectedAshaAreas, false, villageIds, s, limit, offset, qrScanFilter);
+                break;
             default:
                 break;
         }
@@ -846,6 +856,10 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
                 break;
             case SERVICE_CHILDREN:
                 addChildsBelow5YearsList();
+                break;
+            case SERVICE_ADOLESCENT:
+                //addAdolescentMemberList();
+                //addChildsBelow5YearsList();
                 break;
             default:
                 break;
@@ -1203,6 +1217,26 @@ public class MyPeopleActivity extends MenuActivity implements View.OnClickListen
         } else {
             bodyLayoutContainer.removeView(pagingHeaderView);
             noMemberAvailableView = MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.NO_CHILD_MEMBER_IN_AREA);
+            bodyLayoutContainer.addView(noMemberAvailableView);
+        }
+        hideProcessDialog();
+    }
+
+    @UiThread
+    public void addAdolescentMemberList() {
+        if (memberList != null && !memberList.isEmpty()) {
+            pagingHeaderView = MyStaticComponents.getListTitleView(this, LabelConstants.SELECT_ADOLESCENT);
+            bodyLayoutContainer.addView(pagingHeaderView);
+
+            List<ListItemDataBean> membersList = getMembersList(memberList);
+            memberList.removeAll(removedChildren);
+
+            AdapterView.OnItemClickListener onItemClickListener = (parent, view, position, id) -> selectedPeopleIndex = position;
+            pagingListView = MyStaticComponents.getPaginatedListViewWithItem(context, membersList, R.layout.listview_row_with_two_item, onItemClickListener, this);
+            bodyLayoutContainer.addView(pagingListView);
+        } else {
+            bodyLayoutContainer.removeView(pagingHeaderView);
+            noMemberAvailableView = MyStaticComponents.generateQuestionView(null, null, this, LabelConstants.NO_ADOLESCENT_MEMBER_IN_AREA);
             bodyLayoutContainer.addView(noMemberAvailableView);
         }
         hideProcessDialog();

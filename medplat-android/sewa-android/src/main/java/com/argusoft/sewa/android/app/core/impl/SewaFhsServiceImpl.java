@@ -1425,6 +1425,79 @@ public class SewaFhsServiceImpl implements SewaFhsService {
     }
 
     @Override
+    public List<MemberDataBean> retrieveAdolescentChildren(List<Integer> locationIds, Boolean isHighRisk, List<Integer> villageIds,
+                                                                    CharSequence searchString, long limit, long offset, LinkedHashMap<String, String> qrData) {
+        List<MemberDataBean> memberDataBeans = new ArrayList<>();
+
+        try {
+            List<String> familyIds = new ArrayList<>();
+            List<FamilyBean> familyBeans;
+
+            if (locationIds != null && !locationIds.isEmpty()) {
+                familyBeans = familyBeanDao.queryBuilder().selectColumns(FieldNameConstants.FAMILY_ID).where()
+                        .in(FieldNameConstants.AREA_ID, locationIds)
+                        .and().in(FieldNameConstants.STATE, FhsConstants.FHS_ACTIVE_CRITERIA_FAMILY_STATES).query();
+            } else {
+                familyBeans = familyBeanDao.queryBuilder().selectColumns(FieldNameConstants.FAMILY_ID).where()
+                        .in(FieldNameConstants.LOCATION_ID, villageIds)
+                        .and().in(FieldNameConstants.STATE, FhsConstants.FHS_ACTIVE_CRITERIA_FAMILY_STATES).query();
+            }
+
+            for (FamilyBean familyBean : familyBeans) {
+                familyIds.add(familyBean.getFamilyId());
+            }
+            if (!familyIds.isEmpty()) {
+                List<MemberBean> memberBeans;
+
+                Calendar dateForAge19Years = Calendar.getInstance();
+                dateForAge19Years.add(Calendar.YEAR, -19);
+                Calendar dateForAge10Years = Calendar.getInstance();
+                dateForAge10Years.add(Calendar.YEAR, -10);
+                Where<MemberBean, Integer> where = memberBeanDao.queryBuilder().limit(limit).offset(offset).orderBy(FieldNameConstants.DOB, false).where();
+                if (Objects.equals(qrData.get("isQrCodeScan"), "true")) {
+                    memberBeans = where.and(
+                            where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
+                            where.between(FieldNameConstants.DOB, dateForAge19Years, dateForAge10Years),
+                            where.or(
+                                    where.like(FieldNameConstants.HEALTH_ID, "%" + qrData.get(FieldNameConstants.HEALTH_ID) + "%"),       //Search By HealthId
+                                    where.like(FieldNameConstants.HEALTH_ID_NUMBER, "%" + qrData.get(FieldNameConstants.HEALTH_ID_NUMBER) + "%")       //Search By HealthIdNumber
+                            )
+                    ).query();
+                } else if (searchString != null) {
+                    memberBeans = where.and(
+                            where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
+                            where.between(FieldNameConstants.DOB, dateForAge19Years, dateForAge10Years),
+                            where.or(where.like(FieldNameConstants.UNIQUE_HEALTH_ID, "%" + searchString + "%"),   //Search By UniqueHealthId
+                                    where.like(FieldNameConstants.FIRST_NAME, "%" + searchString + "%"),         //Search By FirstName
+                                    where.like(FieldNameConstants.FAMILY_ID, "%" + searchString + "%"),          //Search By FamilyId
+                                    where.like(FieldNameConstants.MOBILE_NUMBER, "%" + searchString + "%"),       //Search By MobileNumber
+                                    where.like(FieldNameConstants.HEALTH_ID, "%" + searchString + "%")       //Search By HealthId
+                            )
+                    ).query();
+                } else {
+                    memberBeans = where.and(
+                            where.in(FieldNameConstants.FAMILY_ID, familyIds),
+                            where.notIn(FieldNameConstants.STATE, FhsConstants.FHS_INACTIVE_CRITERIA_MEMBER_STATES),
+                            where.between(FieldNameConstants.DOB, dateForAge19Years, dateForAge10Years)
+                    ).query();
+                }
+
+                for (MemberBean memberBean : memberBeans) {
+                    if (memberBean.getDob() != null && memberBean.getDob().after(dateForAge10Years.getTime()) && memberBean.getDob().before(dateForAge19Years.getTime())) {
+                        memberDataBeans.add(new MemberDataBean(memberBean));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, null, e);
+        }
+        return memberDataBeans;
+    }
+
+
+    @Override
     public List<MemberDataBean> retrieveChildsBelow6YearsByAshaArea(Integer locationId, CharSequence searchString, long limit, long offset,
                                                                     LinkedHashMap<String, String> qrData) {
         List<MemberDataBean> memberDataBeans = new ArrayList<>();

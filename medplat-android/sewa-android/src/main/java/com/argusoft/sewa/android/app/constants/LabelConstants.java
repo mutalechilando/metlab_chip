@@ -21,6 +21,7 @@ public class LabelConstants {
 
     //TechoServiceImpl
     public static final String AVAILABLE_SPACE_IN_MB = "Available Space (in MB) : ";
+    public static final String ADOLESCENT_HEALTH_SCREENING = "Adolescent Health Screening Services ";
     public static final String CALLING_MAIN_API_FOR_BRINGING_DATA = "Calling Main API for bringing all data";
     public static final String DATA_FROM_MAIN_API_RETRIEVED = "Data from Main API retrieved in : ";
     public static final String DELETE_FAMILIES_COUNT = "Delete Families Count : ";
@@ -279,6 +280,7 @@ public class LabelConstants {
     public static final String NO_PREGNANT_WOMEN_IN_AREA = "No pregnant women in your area";
     public static final String NO_PNC_WOMEN_IN_AREA = "No PNC Women in your Area";
     public static final String NO_CHILD_MEMBER_IN_AREA = "No child member in your Area";
+    public static final String NO_ADOLESCENT_MEMBER_IN_AREA = "No adolescent member in your Area";
     public static final String NO_MIGRATED_MEMBER_FOUND = "No Migrated Members found in this Location";
     public static final String NO_TOURIST_FOUND = "No Records Found";
     public static final String NO_EMERGENCY_SUPPORTER_FOUND = "No emergency supporter found";
@@ -335,6 +337,7 @@ public class LabelConstants {
     public static final String SELECT_ADOLESCENT_GIRL = "Select an Adolescent Girl";
     public static final String SELECT_MOTHER = "Select Mother";
     public static final String SELECT_CHILD = "Select a Child";
+    public static final String SELECT_ADOLESCENT = "Select an Adolescent";
     public static final String NO_ADOLESCENT_GIRLS_IN_YOUR_AREA = "No adolescent girl in your area";
     public static final String NO_MOTHERS_WITH_LAST_DELIVERY_BEFORE_6_MONTHS_ALERT = "No mother with last delivery date within 6 months in your area";
     public static final String NO_CHILDREN_OF_AGE_0_TO_6_YEARS_ALERT = "No child is younger than 6 years in your area";

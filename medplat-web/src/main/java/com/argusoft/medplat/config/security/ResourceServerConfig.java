@@ -30,7 +30,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 //                .antMatchers("/rest/**").permitAll()
                 .antMatchers("/medplat-ui/bower.json").authenticated()
                 .antMatchers("/medplat-ui/npm-debug.log").authenticated()
-                .antMatchers("/medplat-ui/package-lock.json").authenticated()
+                .antMatchers("/medplat-ui/package.json").authenticated()
                 .antMatchers("/medplat-ui/package.json").authenticated()
                 .antMatchers("/medplat-ui/sonar*").authenticated()
                 .antMatchers("/medplat-ui/constants.js").permitAll()

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.argusoft.sewa.android.app.activity.AbhaNumberActivity_;
+import com.argusoft.sewa.android.app.activity.AdolescentScreeningActivityDemo_;
 import com.argusoft.sewa.android.app.activity.AnnouncementActivity_;
 import com.argusoft.sewa.android.app.activity.AssignFamilyActivity_;
 import com.argusoft.sewa.android.app.activity.DailyNutritionActivity_;
@@ -198,6 +199,10 @@ public class MenuClickListener implements View.OnClickListener {
                 break;
             case MenuConstants.FHW_NCD_WEEKLY_VISIT:
                 intent = new Intent(context, NcdWeeklyVisitFhwActivity_.class);
+                context.startActivity(intent);
+                break;
+            case MenuConstants.ADOLESCENT_SCREENING:
+                intent = new Intent(context, AdolescentScreeningActivityDemo_.class);
                 context.startActivity(intent);
                 break;
             default:

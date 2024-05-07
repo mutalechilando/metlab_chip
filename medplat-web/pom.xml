@@ -89,6 +89,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -249,9 +250,9 @@
                 <server.redirect.port>8181</server.redirect.port>
                 <server.is.secure>true</server.is.secure>
                 <jdbc.url>localhost</jdbc.url>
-                <jdbc.database>medplat</jdbc.database>
+                <jdbc.database>chip_local_db</jdbc.database>
                 <jdbc.username>postgres</jdbc.username>
-                <jdbc.password>argusadmin</jdbc.password>
+                <jdbc.password>postgres</jdbc.password>
                 <jdbc.port>5432</jdbc.port>
                 <jdbc.maxActiveConnection>5</jdbc.maxActiveConnection>
                 <server.droptype>P</server.droptype>

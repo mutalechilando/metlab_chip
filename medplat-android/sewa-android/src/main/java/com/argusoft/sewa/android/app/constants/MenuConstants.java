@@ -51,6 +51,8 @@ public class MenuConstants {
     public static final String DAILY_NUTRITION = "DAILY_NUTRITION";
     public static final String TAKE_HOME_RATION = "TAKE_HOME_RATION";
 
+    public static final String ADOLESCENT_SCREENING = "ADOLESCENT_SCREENING";
+
     //Lab Technician Role Menus
     public static final String OPD_FACILITY = "OPD_FACILITY";
 
@@ -134,6 +136,7 @@ public class MenuConstants {
             menuIcons.put(REQUEST_EMERGENCY_SUPPORT, R.drawable.emergency_icon);
             menuIcons.put(VIEW_EMERGENCY_REQUESTS, R.drawable.emergency_icon);
             menuIcons.put(GET_SCREENING_HISTORY, R.drawable.npcb);
+            menuIcons.put(ADOLESCENT_SCREENING, R.drawable.emergency_icon);
         }
 
         if (menuIcons.containsKey(constant.trim())) {

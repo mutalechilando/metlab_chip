@@ -38,6 +38,9 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
         try {
             String username = LoginAESEncryptionUtil.decrypt(authentication.getName(), false);
             String password = LoginAESEncryptionUtil.decrypt((String) authentication.getCredentials(), false);
+
+            System.out.println("Us" + username);
+            System.out.println("pas" + password);
             updatedAuthentication =
                     new UsernamePasswordAuthenticationToken(username, password);
             updatedAuthentication.setDetails(authentication.getDetails());
